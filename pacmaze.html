@@ -1,6 +1,6 @@
 <!-- 
 	Pacmaze. This is a pacman-like 3d game based on webgl, html and javascript.
-    Copyright (C) <2015>  <Lappas Dionysis>
+    Copyright (C) <2015>  <Lappas Dionysis dio@freelabs.net>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,11 +22,13 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>WebGL Sandbox</title>
+	<meta name="description" content="Pacmaze is a pacman 3d game based on web technologies">
+	<meta name="keywords" content="pacmaze, webgl">
+	<meta name="author" content="Lappas Dionysis">
+	<title>Pacmaze</title>
 	<!-- external libraries for matrix calculations and maintenance -->
 	<script type="text/javascript" src="./sandbox_files/glMatrix-0.9.5.min.js"></script>
 	<script type="text/javascript" src="./sandbox_files/webgl-utils.js"></script>
-	<script type="text/javascript" src="./sandbox_files/dijlstra.js"></script>
 
 	<!-- Code for the vertex shader-->
 	<script id="shader-vs" type="x-shader/x-vertex">
@@ -680,7 +682,6 @@
 			score: 			-50,	//The game score, 50 points for earch pellet
 			ghostsBusted: 	[],		//Ghosts that were busted 
 			levelNum: 		1, 		//The current game level (e.g. 1, 2 etc)
-			shortestPaths:	[],		//The shortest paths calculated [From][To]
 			init: function(){
 				this.ignoreKeys = false; 
 				this.gameOver 	= false;
@@ -715,8 +716,7 @@
 				//Check if pacman lost a life
 				if (game.lostLife == true){
 					game.lives--;	
-					displayInfo(game.score, game.lives);       
-					alert('You have: '+game.lives+' lives remaining!');
+					displayInfo(game.score, game.lives);  
 
 					//Check pacman's available lives
 					if (game.lives == 0){
@@ -727,7 +727,13 @@
 						alert('The game is over');
 					}
 					else{
+						//inform the user
+						alert('You have: '+game.lives+' lives remaining!');
+						
 						//RE INITIALIZE
+						//empty keys object
+						currentlyPressedKeys = {};
+
 						game.ignoreKeys = true;
 						game.lostLife = false;
 						game.gameCamera = true;
@@ -1456,7 +1462,6 @@
 	    }
 
 
-
 	</script>
 
 
@@ -1484,20 +1489,50 @@
 			font-weight: bold; 
 			font-color: red;
 		}
+
+		#header{
+			text-align: center;
+			font-family: "Sans-serif";
+		}
+
+		hr { 
+		    display: block;
+		    margin-top: 0.5em;
+		    margin-bottom: 0.5em;
+		    margin-left: auto;
+		    margin-right: auto;
+		    border-style: inset;
+		    border-width: 1px;
+		} 
+
+
 	</style>
 
 
 	</head>
-	<!-- HMTL for the canvas element-->
-	<body onload="webGLStart();"> <!-- calls the entry point of our application -->
 
+	<body>
+		<div id="header">
+			<h1>Pacmaze</h1>
+			<p><em>by</em> <strong>Lappas Dionysis</strong></p>
+			<hr>
+			<p>
+				This is a pacman-like 3d game based exclusively on <strong>Web technologies</strong>: WegGl, Javascript and Html. Code on <a href="https://github.com/denlap007/pacmaze" target="blank">Github repo</a> too.
+				</br>
+				</br>
+				Change game camera with 'P' (Panoramic) and 'T' (Tracking) keyboard keys.
+				</br>
+				</br>
+				<!-- calls the entry point of our application -->
+			</p>
+			<button type="button" onclick="this.disabled=true; webGLStart();">Start Game</button>
+			</br>
+			</br>
+		</div>
+		<!-- HMTL for the canvas element-->
+		<canvas id="MyWebGl" style="border: none;" width="800" height="500"></canvas>
+		<div id="h1"></div>
+		<p id="info"></p>
+	</body>
 
-	<canvas id="MyWebGl" style="border: none;" width="800" height="500"></canvas> 
-	<br>
-	<div id="h1">
-	</div>
-	<p id="info"> </p>
-
-
-
-</body></html>
+</html>
